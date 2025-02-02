@@ -49,7 +49,7 @@ export default function LoginPage() {
             <nav className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 bg-transparent z-10">
                 <Link to="/" className="flex items-center">
                     <img
-                        src="../../logo.png" // Replace with your logo URL
+                        src="public\Screenshot_2025-02-02_110454-removebg-preview.png" // Replace with your logo URL
                         alt="Logo"
                         className="h-11" // Adjust logo height as needed
                     />
