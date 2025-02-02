@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.5.1",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@monaco-editor/react": "^4.6.0",
     "axios": "^1.7.9",
     "firebase": "^11.2.0",
@@ -48,4 +48,3 @@
   "author": "",
   "license": "ISC"
 }
->>>>>>> ac6cd75 (2FA)

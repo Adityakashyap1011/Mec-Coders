@@ -4,9 +4,12 @@ import { useAuth } from '../hooks/useAuth'; // Assuming you have this hook for a
 import { auth } from '../firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
 import CodeEditor from '../components/CodeEditor';
+import ChatBox from '../components/ChatBox';
+import Sidebar from '../components/SideBar';
 
 const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(18); // Sidebar width in rem
   const user = useAuth();
 
   const toggleTheme = () => {
@@ -31,16 +34,18 @@ const HomePage = () => {
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
+  const handleResize = (e) => {
+    const newWidth = Math.min(18, Math.max(0, (e.clientX / window.innerWidth) * 30)); // Restrict width between 0rem and 18rem
+    setSidebarWidth(newWidth);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Navbar */}
       <nav className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 shadow-md">
-      
         <Link to="/" className="flex items-center space-x-2">
-          <img src="public\Screenshot_2025-02-02_110454-removebg-preview.png" alt="Logo" className="w-40 h-10 rounded-full" />
-          
+          <img src="public/Screenshot_2025-02-02_110454-removebg-preview.png" alt="Logo" className="w-40 h-10 rounded-full" />
         </Link>
-
         {/* Right-side navigation items */}
         <div className="flex items-center space-x-6">
           {user ? (
@@ -79,8 +84,29 @@ const HomePage = () => {
         </div>
       </nav>
 
-      <main className="flex-grow p-4">
-        <CodeEditor />
+      <main className="flex flex-grow">
+        {/* Resizable Sidebar */}
+        <div 
+          className="bg-gray-800 text-white h-screen overflow-hidden relative"
+          style={{ width: `${sidebarWidth}rem` }}
+        >
+          <Sidebar />
+          <div 
+            className="absolute top-0 right-0 h-full w-2 bg-gray-600 cursor-ew-resize" 
+            onMouseDown={(e) => {
+              e.preventDefault();
+              window.addEventListener('mousemove', handleResize);
+              window.addEventListener('mouseup', () => {
+                window.removeEventListener('mousemove', handleResize);
+              }, { once: true });
+            }}
+          ></div>
+        </div>
+
+        {/* Code Editor Section */}
+        <div className="p-4" style={{ width: `calc(100% - ${sidebarWidth}rem)` }}>
+          <CodeEditor />
+        </div>
       </main>
     </div>
   );
