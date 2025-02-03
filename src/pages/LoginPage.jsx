@@ -15,7 +15,7 @@ export default function LoginPage() {
         try {
             await signInWithPopup(auth, googleProvider);
         } catch (err) {
-            setError(err.message);
+            setError('Login Failure');
         }
     };
 
@@ -23,7 +23,7 @@ export default function LoginPage() {
         try {
             await signInWithPopup(auth, githubProvider);
         } catch (err) {
-            setError(err.message);
+            setError('Login Failure');
         }
     };
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
         try {
             await signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value);
         } catch (err) {
-            setError(err.message);
+            setError('Invalid username or password');
         }
     };
 
