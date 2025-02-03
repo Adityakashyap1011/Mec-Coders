@@ -25,12 +25,10 @@ export default function PasswordResetPage() {
                     <img
                         src="public\Screenshot_2025-02-02_110454-removebg-preview.png"
                         alt="Logo"
-                        className="w-40 h-16"
+                        className="h-20"
                     />
                 </Link>
-                <Link to="/" className="text-white bg-indigo-600 rounded-lg px-6 py-3 transition-all duration-300 ease-in-out hover:bg-indigo-700 hover:shadow-lg hover:rounded-xl">
-                    Home
-                </Link>
+                
             </nav>
 
             <div className="absolute inset-0 flex flex-wrap justify-center pointer-events-none z-0">
@@ -42,7 +40,7 @@ export default function PasswordResetPage() {
             <div className="flex max-w-4xl w-full shadow-2xl rounded-lg overflow-hidden z-10 bg-white/10 backdrop-blur-sm">
                 <div className="hidden md:block w-1/2 bg-white">
                     <img
-                        src="https://img.freepik.com/free-vector/flat-illustration-stock-trader-working-computer-with-graphs-man-investor-using-pc-analyzing-charts-diagrams-exchange-market-finances-cryptocurrency-investing_74855-20567.jpg?w=2000&t=st=1727629695~exp=1727630295~hmac=fe21d2c10f06284d06b0d5834b2a33b71528affef5583557f6e98507c4733751"
+                        src="public\7534046_3682888.jpg"
                         alt="password-reset"
                         className="w-auto h-100 object-cover mt-[97px]"
                     />
@@ -84,36 +82,43 @@ export default function PasswordResetPage() {
             </div>
 
             <style jsx>{`
-                .dot {
-                    width: 4px;
-                    height: 4px;
-                    background-color: rgba(255, 255, 255, 0.5);
-                    border-radius: 50%;
-                    position: absolute;
-                    animation: glow 2s infinite alternate ease-in-out;
-                    pointer-events: none;
-                    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-                }
+              .dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    position: absolute;
+    animation: moveAndGlow 3s infinite alternate ease-in-out;
+    pointer-events: none;
+    box-shadow: 
+      0 0 15px rgba(255, 255, 255, 0.9), 
+      0 0 30px rgba(255, 255, 255, 0.9), 
+      0 0 45px rgba(255, 255, 255, 0.9);
+  }
 
-                @keyframes glow {
-                    0% {
-                        transform: scale(1);
-                        opacity: 0.5;
-                    }
-                    100% {
-                        transform: scale(1.2);
-                        opacity: 1;
-                    }
-                }
+  @keyframes moveAndGlow {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(1.5);
+      opacity: 0.3;
+    }
+  }
 
-                ${Array.from({ length: 50 }).map((_, index) => `
-                    .dot-${index} {
-                        left: ${Math.random() * 100}%;
-                        top: ${Math.random() * 100}%;
-                        animation-delay: ${Math.random() * 2}s;
-                    }
-                `).join('')}
-            `}</style>
+  ${Array.from({ length: 50 }).map((_, index) => `
+    .dot-${index} {
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      animation-delay: ${Math.random() * 2}s;
+      animation-duration: ${Math.random() * 3 + 2}s;
+    }
+  `).join('')}
+`}</style>
         </div>
     );
 }

@@ -42,9 +42,9 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 shadow-md">
+      <nav className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-800 shadow-md">
         <Link to="/" className="flex items-center space-x-2">
-          <img src="public/Screenshot_2025-02-02_110454-removebg-preview.png" alt="Logo" className="w-40 h-10 rounded-full" />
+          <img src="public/Screenshot_2025-02-02_110454-removebg-preview.png" alt="Logo" className="rounded-full w-40 h-16"/>
         </Link>
         {/* Right-side navigation items */}
         <div className="flex items-center space-x-6">
