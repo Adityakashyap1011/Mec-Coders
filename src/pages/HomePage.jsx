@@ -12,39 +12,44 @@ const HomePage = () => {
   const [sidebarWidth, setSidebarWidth] = useState(18); // Sidebar width in rem
   const user = useAuth();
 
+  // Toggle theme between light and dark
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => {
       const newMode = !prevMode;
-      document.body.setAttribute('data-theme', newMode ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', newMode); // Toggle Tailwind's dark mode
+      localStorage.setItem('theme', newMode ? 'dark' : 'light'); // Save theme preference
       return newMode;
     });
   };
 
+  // Check saved theme preference on initial load
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-      document.body.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark'); // Apply dark mode
     } else {
-      document.body.setAttribute('data-theme', 'light');
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark'); // Apply light mode
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
+  // Handle sidebar resizing
   const handleResize = (e) => {
     const newWidth = Math.min(18, Math.max(0, (e.clientX / window.innerWidth) * 30)); // Restrict width between 0rem and 18rem
     setSidebarWidth(newWidth);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-400 dark:bg-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-800 shadow-md">
+      <nav className="flex items-center justify-between p-2 bg-gray-600 dark:bg-gray-800 shadow-md">
         <Link to="/" className="flex items-center space-x-2">
-          <img src="public/Screenshot_2025-02-02_110454-removebg-preview.png" alt="Logo" className="rounded-full w-40 h-16"/>
+          <img
+            src="public/Screenshot_2025-02-02_110454-removebg-preview.png"
+            alt="Logo"
+            className="rounded-full w-40 h-16"
+          />
         </Link>
         {/* Right-side navigation items */}
         <div className="flex items-center space-x-6">
@@ -52,7 +57,7 @@ const HomePage = () => {
             <>
               <Link
                 to="/profile"
-                className="text-gray-700 dark:text-gray-200 hover:text-blue-500 text-sm font-medium"
+                className="text-gray-900 dark:text-gray-200 hover:text-blue-500 text-sm font-medium"
               >
                 Profile
               </Link>
@@ -71,14 +76,23 @@ const HomePage = () => {
               Login
             </Link>
           )}
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-md focus:outline-none bg-gray-300 dark:bg-gray-700"
           >
             {isDarkMode ? (
-              <img src="/public/light-mode-svgrepo-com.svg" alt="Light Mode" className="w-6" />
+              <img
+                src="/public/light-mode-svgrepo-com.svg"
+                alt="Light Mode"
+                className="w-6"
+              />
             ) : (
-              <img src="/public/dark-mode-night-moon-svgrepo-com.svg" alt="Dark Mode" className="w-6" />
+              <img
+                src="/public/dark-mode-night-moon-svgrepo-com.svg"
+                alt="Dark Mode"
+                className="w-6"
+              />
             )}
           </button>
         </div>
@@ -86,13 +100,13 @@ const HomePage = () => {
 
       <main className="flex flex-grow">
         {/* Resizable Sidebar */}
-        <div 
+        <div
           className="bg-gray-800 text-white h-screen overflow-hidden relative"
           style={{ width: `${sidebarWidth}rem` }}
         >
-          <Sidebar />
-          <div 
-            className="absolute top-0 right-0 h-full w-2 bg-gray-600 cursor-ew-resize" 
+          <Sidebar isDarkMode={isDarkMode} />
+          <div
+            className="absolute top-0 right-0 h-full w-2 bg-gray-600 cursor-ew-resize"
             onMouseDown={(e) => {
               e.preventDefault();
               window.addEventListener('mousemove', handleResize);
@@ -104,8 +118,8 @@ const HomePage = () => {
         </div>
 
         {/* Code Editor Section */}
-        <div className="p-4" style={{ width: `calc(100% - ${sidebarWidth}rem)` }}>
-          <CodeEditor />
+        <div className="p-2" style={{ width: `calc(100% - ${sidebarWidth}rem)` }}>
+          <CodeEditor isDarkMode={isDarkMode} />
         </div>
       </main>
     </div>

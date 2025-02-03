@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { executeCode } from "../api";
 
-const Output = ({ editorRef, language }) => {
+const Output = ({ editorRef, language, isDarkMode }) => {
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -24,14 +24,21 @@ const Output = ({ editorRef, language }) => {
 
   return (
     <div className="w-1/2">
-      <p className="mb-2 text-lg text-white">Output</p>
+      <p className={`mb-2 text-lg ${isDarkMode ? 'text-white' : 'text-black'}`}>Output</p>
       <button
-        className="px-4 py-2 mb-4 border-2 border-green-500 text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-colors disabled:opacity-50"
-        onClick={runCode}
-        disabled={isLoading}
-      >
-        {isLoading ? "Running..." : "Run Code"}
-      </button>
+  className={`px-4 py-2 mb-4 border-2 rounded-md transition-colors disabled:opacity-50 
+    ${isDarkMode
+      ? 'border-green-500 text-green-500 hover:bg-green-500 hover:text-white'
+      : 'bg-green-500 text-white hover:bg-white hover:text-green-500 border-green-500'}
+  `}
+  onClick={runCode}
+  disabled={isLoading}
+>
+  {isLoading ? "Running..." : "Run Code"}
+</button>
+
+
+
       <div
         className={`h-[75vh] p-2 border rounded-md text-white ${isError ? "border-red-500 text-red-400" : "border-gray-800"}`}
       >

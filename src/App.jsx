@@ -26,16 +26,23 @@ function App() {
               <Route path="/password-reset" element={<PasswordResetPage />} />
             </>
           ) : (
-            <>
-              {!hasJoinedRoom ? (
-                <Route path="*" element={<Navigate to="/join-room" />} />
-              ) : (
-                <Route path="/" element={<HomePage />} />
-              )}
-              <Route path="/join-room" element={<JoinRoomPage onJoin={() => setHasJoinedRoom(true)} />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
+            // <>
+            //   {!hasJoinedRoom ? (
+            //     <Route path="*" element={<Navigate to="/join-room" />} />
+            //   ) : (
+            //     <Route path="/" element={<HomePage />} />
+            //   )}
+            //   <Route path="/join-room" element={<JoinRoomPage onJoin={() => setHasJoinedRoom(true)} />} />
+            //   <Route path="/profile" element={<ProfilePage />} />
+            //   <Route path="*" element={<Navigate to="/" />} />
+            // </>
+             <>
+             
+               <Route path="/" element={<HomePage />} />
+             <Route path="/join-room" element={<JoinRoomPage onJoin={() => setHasJoinedRoom(true)} />} />
+             <Route path="/profile" element={<ProfilePage />} />
+             <Route path="*" element={<Navigate to="/" />} />
+           </>
           )}
         </Routes>
       </Box>

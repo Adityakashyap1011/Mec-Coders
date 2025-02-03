@@ -1,43 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LANGUAGE_VERSIONS } from "../constants";
 
 const languages = Object.entries(LANGUAGE_VERSIONS);
-const ACTIVE_COLOR = "text-blue-400"; // Tailwind CSS color for active state
+const ACTIVE_COLOR = "text-blue-500"; // Tailwind active color
 
-const LanguageSelector = ({ language, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false); // State to manage dropdown visibility
+const LanguageSelector = ({ language, onSelect, isDarkMode }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Toggle the dropdown visibility when button is clicked
+  // Toggle dropdown visibility
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   return (
     <div className="ml-2 mb-4">
-      <p className="mb-2 text-lg text-white">Language:</p>
+      <p className={`mb-2 text-lg ${isDarkMode ? "text-white" : "text-gray-800"}`}>Language:</p>
       <div className="relative">
+        {/* Button to open dropdown */}
         <button
-          className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          onClick={toggleDropdown} 
+          className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 transition-all ${
+            isDarkMode
+              ? "bg-gray-800 text-white hover:bg-gray-700 focus:ring-blue-400"
+              : "bg-gray-200 text-black hover:bg-gray-300 focus:ring-blue-500"
+          }`}
+          onClick={toggleDropdown}
         >
           {language}
         </button>
 
+        {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute mt-2 w-48 bg-[#110c1b] border border-gray-700 rounded-md shadow-lg z-10">
+          <div
+            className={`absolute mt-2 w-48 border rounded-md shadow-lg z-10 transition-all ${
+              isDarkMode ? "bg-gray-900 border-gray-700" : "bg-white border-gray-300"
+            }`}
+          >
             {languages.map(([lang, version]) => (
               <div
                 key={lang}
-                className={`w-full text-left px-4 py-2 ${
-                  lang === language ? ACTIVE_COLOR : "text-white"
-                } ${
-                  lang === language ? "bg-gray-900" : "bg-transparent"
-                } hover:${ACTIVE_COLOR} hover:bg-gray-900 cursor-pointer transition-colors`}
+                className={`w-full text-left px-4 py-2 cursor-pointer transition-colors ${
+                  lang === language
+                    ? `${ACTIVE_COLOR} ${isDarkMode ? "bg-gray-800" : "bg-gray-200"}`
+                    : `${isDarkMode ? "text-white" : "text-gray-800"}`
+                } hover:${ACTIVE_COLOR} hover:bg-gray-700`}
                 onClick={() => {
                   onSelect(lang);
-                  setIsOpen(false); 
+                  setIsOpen(false);
                 }}
               >
-                {lang}
-                <span className="text-gray-600 text-sm ml-1">({version})</span>
+                {lang} <span className="text-sm opacity-75 ml-1">({version})</span>
               </div>
             ))}
           </div>

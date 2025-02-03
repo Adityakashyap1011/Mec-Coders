@@ -1,26 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const ChatBox = () => {
+const ChatBox = ({ isDarkMode }) => {
     const [prompt, setPrompt] = useState("");
     const [response, setResponse] = useState("");
     const [error, setError] = useState("");
-    const [height, setHeight] = useState(250); // Initial height of the chat box
-    const [isResizing, setIsResizing] = useState(false); // Track if resizing is active
+    const [height, setHeight] = useState(250);
     const resizeRef = useRef(null);
+
+    useEffect(() => {
+        // Set dark mode styles dynamically
+        document.documentElement.classList.toggle("dark", isDarkMode);
+    }, [isDarkMode]);
 
     const handleGenerate = async () => {
         try {
             const res = await fetch("http://localhost:3000/api/gemini/generate", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ prompt }),
             });
 
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
-            }
+            if (!res.ok) throw new Error("Failed to fetch");
 
             const data = await res.json();
             setResponse(data.response);
@@ -31,61 +31,56 @@ const ChatBox = () => {
         }
     };
 
-    const handleDoubleClick = () => {
-        // Enable resizing mode on double-click
-        setIsResizing(true);
-    };
-
     const handleResize = (e) => {
-        if (isResizing) {
-            const startY = e.clientY;
-            const startHeight = height;
+        const startY = e.clientY;
+        const startHeight = height;
 
-            const onMouseMove = (e) => {
-                const newHeight = startHeight + (startY - e.clientY);
-                setHeight(Math.max(150, Math.min(window.innerHeight * 0.8, newHeight))); // Min 150px, max 80% of viewport height
-            };
+        const onMouseMove = (e) => {
+            const newHeight = startHeight + (startY - e.clientY);
+            setHeight(Math.max(150, Math.min(window.innerHeight * 0.8, newHeight)));
+        };
 
-            const onMouseUp = () => {
-                window.removeEventListener("mousemove", onMouseMove);
-                window.removeEventListener("mouseup", onMouseUp);
-                setIsResizing(false); // Disable resizing mode after releasing the mouse
-            };
+        const onMouseUp = () => {
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+        };
 
-            window.addEventListener("mousemove", onMouseMove);
-            window.addEventListener("mouseup", onMouseUp);
-        }
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mouseup", onMouseUp);
     };
 
     return (
         <div
-            className="w-full bg-gray-800 text-white border-t border-gray-700 shadow-xl rounded-t-lg"
+            className={`w-full border-t shadow-xl rounded-t-lg transition-all ${
+                isDarkMode ? "bg-gray-800 text-white border-gray-700" : "bg-gray-200 text-black border-gray-300"
+            }`}
             style={{ height: `${height}px` }}
         >
             {/* Resize Handle */}
             <div
                 className="h-1 cursor-row-resize bg-gray-600 rounded-t-lg"
-                onDoubleClick={handleDoubleClick} // Enable resizing on double-click
-                onMouseDown={handleResize} // Start resizing on mouse down
+                onMouseDown={handleResize}
                 ref={resizeRef}
             ></div>
 
             {/* Chat Box Content */}
             <div className="flex items-center justify-center p-4">
                 <img
-                    src="public/robot-chatbot-icon-sign-free-vector-removebg-preview.png"
-                    alt="cody"
+                    src="/robot-chatbot-icon-sign-free-vector-removebg-preview.png"
+                    alt="Cody AI"
                     height={40}
                     width={60}
                 />
                 <h1 className="text-lg font-bold ml-2">CODY AI</h1>
             </div>
-            <div className="p-1">
+            <div className="p-2">
                 <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Enter your prompt here..."
-                    className="w-full h-20 p-2 bg-gray-700 text-white border border-gray-600 rounded-md"
+                    className={`w-full h-20 p-2 border rounded-md transition-all ${
+                        isDarkMode ? "bg-gray-800 text-white border-gray-700" : "bg-white text-black border-gray-400"
+                    }`}
                 />
                 <button
                     onClick={handleGenerate}
@@ -95,9 +90,13 @@ const ChatBox = () => {
                 </button>
                 {error && <p className="mt-2 text-red-400">{error}</p>}
                 {response && (
-                    <div className="mt-4 p-3 bg-gray-700 rounded-md border border-gray-600">
+                    <div
+                        className={`mt-4 p-3 rounded-md border transition-all ${
+                            isDarkMode ? "bg-gray-800 border-gray-700 text-gray-300" : "bg-gray-100 border-gray-400 text-black"
+                        }`}
+                    >
                         <h2 className="text-md font-semibold">Generated Response:</h2>
-                        <p className="mt-2 text-gray-300">{response}</p>
+                        <p className="mt-2">{response}</p>
                     </div>
                 )}
             </div>
