@@ -13,9 +13,6 @@ AI Assisted Code Editor is a lightweight, intelligent, and collaborative code ed
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [API Documentation](#api-documentation)
-6. [Contributing](#contributing)
-7. [License](#license)
-
 ---
 
 ## Core Features
