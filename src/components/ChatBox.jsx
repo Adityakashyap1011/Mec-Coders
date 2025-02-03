@@ -91,7 +91,7 @@ const ChatBox = ({ isDarkMode }) => {
                 {error && <p className="mt-2 text-red-400">{error}</p>}
                 {response && (
                     <div
-                        className={`mt-4 p-3 rounded-md border transition-all ${
+                        className={`mt-4 p-3 rounded-md border transition-all max-h-40 overflow-y-auto ${
                             isDarkMode ? "bg-gray-800 border-gray-700 text-gray-300" : "bg-gray-100 border-gray-400 text-black"
                         }`}
                     >

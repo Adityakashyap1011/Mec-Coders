@@ -41,7 +41,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-400 dark:bg-gray-900">
+    <div className=" flex flex-col bg-gray-400 dark:bg-gray-900">
       {/* Navbar */}
       <nav className="flex items-center justify-between p-2 bg-gray-600 dark:bg-gray-800 shadow-md">
         <Link to="/" className="flex items-center space-x-2">
